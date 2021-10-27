@@ -86,6 +86,15 @@ sudo kubeadm config images pull
 
 ### Pull from a different registry, e.g docker.io or internal ###
 sudo kubeadm config images pull --image-repository docker.io                                     
+
+                                      
+6. Cluster
+
+pegaz@peg01:~$ cat /etc/hosts | grep clust
+192.168.122.95 k8s-cluster.peg
+
+sudo kubeadm init --pod-network-cidr=192.168.0.0/16 --upload-certs --cri-socket /var/run/docker.sock --control-plane-endpoint=k8s-cluster.peg
+                                      
                                       
                                       
                                       
