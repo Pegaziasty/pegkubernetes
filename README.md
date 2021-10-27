@@ -93,7 +93,30 @@ sudo kubeadm config images pull --image-repository docker.io
 pegaz@peg01:~$ cat /etc/hosts | grep clust
 192.168.122.95 k8s-cluster.peg
 
-sudo kubeadm init --pod-network-cidr=192.168.0.0/16 --upload-certs --cri-socket /var/run/docker.sock --control-plane-endpoint=k8s-cluster.peg
+sudo kubeadm init --pod-network-cidr=192.168.0.0/16 --upload-certs --control-plane-endpoint=k8s-cluster.peg
+
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+kubectl cluster-info
+
+7. Additional
+                                      
+You can now join any number of the control-plane node running the following command on each as root:
+
+  kubeadm join k8s-cluster.peg:6443 --token a3bbnz.1yy2r5kfdeooc0x1 \
+	--discovery-token-ca-cert-hash sha256:2baad0e560cd48f4c6416f6bc57529d3c40b41f7a659819bcf96dded600961af \
+	--control-plane --certificate-key 41ded19012b5a5657529c7efa7a11a492618bef1890202229ae5349f77693c61
+
+Please note that the certificate-key gives access to cluster sensitive data, keep it secret!
+As a safeguard, uploaded-certs will be deleted in two hours; If necessary, you can use
+"kubeadm init phase upload-certs --upload-certs" to reload certs afterward.
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join k8s-cluster.peg:6443 --token a3bbnz.1yy2r5kfdeooc0x1 \
+	--discovery-token-ca-cert-hash sha256:2baad0e560cd48f4c6416f6bc57529d3c40b41f7a659819bcf96dded600961af 
+
                                       
                                       
                                       
