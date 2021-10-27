@@ -61,6 +61,7 @@ sudo tee /etc/docker/daemon.json <<EOF
 EOF
 
 # Start and enable Services
+                                      
 sudo systemctl daemon-reload && sudo systemctl restart docker && sudo systemctl enable docker
                                       
 5. Initialize master node
@@ -71,7 +72,21 @@ pegaz@peg01:~$ lsmod | grep br_netfilter
 br_netfilter           28672  0
 bridge                249856  1 br_netfilter
 
-sudo systemctl enable kubelet
+sudo systemctl enable kubelet && sudo kubeadm init
+                                      
+Pull container images:
+
+sudo kubeadm config images pull
+
+# Docker
+sudo kubeadm config images pull --cri-socket /var/run/docker.sock
+                                      
+### Pull from default registry: k8s.gcr.io ###
+sudo kubeadm config images pull
+
+### Pull from a different registry, e.g docker.io or internal ###
+sudo kubeadm config images pull --image-repository docker.io                                     
+                                      
                                       
                                       
                                       
