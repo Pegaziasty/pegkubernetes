@@ -20,6 +20,8 @@ sudo apt -y install vim git curl wget kubelet kubeadm kubectl && sudo apt-mark h
 
 kubectl version --client && kubeadm version
 
+Disable SWAP:
+
 sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab && sudo swapoff -a
 
 
